@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  body { @apply bg-cream text-navy-900 font-sans antialiased; }
+  h1, h2, h3, h4 { @apply font-display; }
+  input, select, textarea { font-size: 16px; }
+}
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 font-semibold transition active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none; }
+  .btn-primary { @apply btn bg-gradient-to-r from-saffron-500 to-festive-red text-white shadow-md hover:brightness-105; }
+  .btn-navy { @apply btn bg-navy text-white hover:bg-navy-600; }
+  .btn-ghost { @apply btn bg-white text-navy border border-navy-100 hover:bg-navy-50; }
+  .btn-wa { @apply btn bg-[#25D366] text-white hover:brightness-105; }
+  .btn-sm { @apply px-3 py-1.5 text-sm rounded-lg; }
+  .card { @apply bg-white rounded-2xl shadow-card border border-navy-50; }
+  .input { @apply w-full rounded-xl border border-navy-100 bg-white px-3.5 py-2.5 text-navy-900 placeholder:text-slate-400 outline-none focus:border-saffron-500 focus:ring-4 focus:ring-saffron-100 transition; }
+  .label { @apply block text-sm font-semibold text-navy-800 mb-1.5; }
+  .chip { @apply inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition; }
+  .chip-on { @apply chip bg-navy text-white border-navy; }
+  .chip-off { @apply chip bg-white text-navy-800 border-navy-100 hover:border-navy-600; }
+  .badge { @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold; }
+  .rangoli-bg {
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(255,201,60,.25) 0 2px, transparent 3px),
+      radial-gradient(circle at 80% 30%, rgba(247,148,29,.25) 0 2px, transparent 3px),
+      radial-gradient(circle at 40% 80%, rgba(230,51,35,.18) 0 2px, transparent 3px);
+    background-size: 120px 120px, 160px 160px, 140px 140px;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+  .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
+}
+
+@keyframes twinkle { 0%,100% { opacity: .35; transform: scale(.85) } 50% { opacity: 1; transform: scale(1.1) } }
+.twinkle { animation: twinkle 2.4s ease-in-out infinite; }
+@keyframes pop { 0% { transform: scale(.9); opacity: 0 } 100% { transform: scale(1); opacity: 1 } }
+.pop { animation: pop .18s ease-out; }
+@keyframes flicker { 0%,100% { transform: scaleY(1) } 50% { transform: scaleY(1.12) } }
+.flame { transform-origin: bottom center; animation: flicker 1.2s ease-in-out infinite; }
