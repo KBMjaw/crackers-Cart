@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Plus, Pencil, Trash2, X } from 'lucide-react'
 import { supabase } from '../lib/supabase'
-import { inr, STOCK, plural } from '../lib/format'
+import { inr, STOCK, plural, salePrice, hasOffer, pctOff } from '../lib/format'
 import { PageHeader, Field, ImageInput } from './common'
 import { Spinner, Modal, Toggle, Thumb, Empty } from '../components/ui'
 
-const blank = { name: '', description: '', price: '', image_1: null, image_2: null, image_3: null, stock_status: 'in_stock', active: true, featured: false, display_order: 0, items: [] }
+const blank = { name: '', description: '', price: '', offer_price: '', image_1: null, image_2: null, image_3: null, stock_status: 'in_stock', active: true, featured: false, display_order: 0, items: [] }
 
 export default function GiftBoxes() {
   const [rows, setRows] = useState(null)
@@ -17,8 +17,8 @@ export default function GiftBoxes() {
 
   const load = async () => {
     const [g, p] = await Promise.all([
-      supabase.from('gift_boxes').select('*, gift_box_items(id, product_id, quantity, product:products(name, unit_type, price))').order('display_order').order('price'),
-      supabase.from('products').select('id, name, unit_type, price').order('name'),
+      supabase.from('gift_boxes').select('*, gift_box_items(id, product_id, quantity, product:products(name, unit_type, price, offer_price))').order('display_order').order('price'),
+      supabase.from('products').select('id, name, unit_type, price, offer_price').order('name'),
     ])
     setRows(g.data || []); setProducts(p.data || [])
   }
@@ -33,9 +33,10 @@ export default function GiftBoxes() {
   const save = async () => {
     setErr('')
     if (!edit.name.trim()) return setErr('Gift box name is required')
-    if (edit.price === '' || Number(edit.price) < 0) return setErr('Enter a valid price')
+    if (edit.price === '' || Number(edit.price) < 0) return setErr('Enter a valid selling price')
+    if (edit.offer_price !== '' && edit.offer_price != null && Number(edit.offer_price) > Number(edit.price)) return setErr('Offer price cannot be more than the selling price')
     setBusy(true)
-    const v = { name: edit.name.trim(), description: edit.description, price: Number(edit.price), image_1: edit.image_1, image_2: edit.image_2, image_3: edit.image_3, stock_status: edit.stock_status, active: edit.active, featured: edit.featured, display_order: Number(edit.display_order) || 0 }
+    const v = { name: edit.name.trim(), description: edit.description, price: Number(edit.price), offer_price: edit.offer_price === '' || edit.offer_price == null ? null : Number(edit.offer_price), image_1: edit.image_1, image_2: edit.image_2, image_3: edit.image_3, stock_status: edit.stock_status, active: edit.active, featured: edit.featured, display_order: Number(edit.display_order) || 0 }
     let id = edit.id
     const r = id ? await supabase.from('gift_boxes').update(v).eq('id', id) : await supabase.from('gift_boxes').insert(v).select('id').single()
     if (r.error) { setBusy(false); return setErr(r.error.message) }
@@ -50,7 +51,7 @@ export default function GiftBoxes() {
   const del = async (g) => { if (window.confirm(`Delete gift box “${g.name}”?`)) { await supabase.from('gift_boxes').delete().eq('id', g.id); load() } }
 
   const pById = Object.fromEntries(products.map((p) => [p.id, p]))
-  const contentsValue = edit ? edit.items.reduce((s, i) => s + (pById[i.product_id]?.price || 0) * i.quantity, 0) : 0
+  const contentsValue = edit ? edit.items.reduce((s, i) => s + (pById[i.product_id] ? salePrice(pById[i.product_id]) : 0) * i.quantity, 0) : 0
 
   return (
     <div>
@@ -66,7 +67,7 @@ export default function GiftBoxes() {
               </div>
               <div className="p-4">
                 <div className="flex items-start justify-between gap-2">
-                  <div><div className="font-display text-lg font-bold text-navy">{g.name}</div><div className="font-extrabold text-saffron-600">{inr(g.price)}</div></div>
+                  <div><div className="font-display text-lg font-bold text-navy">{g.name}</div><div className="flex items-baseline gap-1.5"><span className="font-extrabold text-saffron-600">{inr(salePrice(g))}</span>{hasOffer(g) && <><s className="text-xs text-slate-400">{inr(g.price)}</s><span className="badge bg-emerald-50 text-emerald-700">{pctOff(g)}% off</span></>}</div></div>
                   <div className="flex gap-1">
                     <button onClick={() => open(g)} className="grid h-8 w-8 place-items-center rounded-lg hover:bg-navy-50" aria-label="Edit"><Pencil size={16} /></button>
                     <button onClick={() => del(g)} className="grid h-8 w-8 place-items-center rounded-lg text-rose-600 hover:bg-rose-50" aria-label="Delete"><Trash2 size={16} /></button>
@@ -89,7 +90,8 @@ export default function GiftBoxes() {
           <div className="space-y-4">
             <div className="grid gap-3 sm:grid-cols-2">
               <Field label="Gift Box Name" className="sm:col-span-2"><input className="input" placeholder="e.g. Family Celebration Box" value={edit.name} onChange={(e) => setEdit({ ...edit, name: e.target.value })} /></Field>
-              <Field label="Price (₹)"><input className="input" inputMode="decimal" value={edit.price} onChange={(e) => setEdit({ ...edit, price: e.target.value.replace(/[^\d.]/g, '') })} /></Field>
+              <Field label="Selling Price (₹)" hint="MRP – shown struck through when an offer price is set"><input className="input" inputMode="decimal" value={edit.price} onChange={(e) => setEdit({ ...edit, price: e.target.value.replace(/[^\d.]/g, '') })} /></Field>
+              <Field label="Offer Price (₹)" hint={hasOffer(edit) ? `Customers pay this · ${pctOff(edit)}% off` : 'Customers pay this. Leave empty to sell at selling price.'}><input className="input" inputMode="decimal" value={edit.offer_price ?? ''} onChange={(e) => setEdit({ ...edit, offer_price: e.target.value.replace(/[^\d.]/g, '') })} /></Field>
               <Field label="Availability"><select className="input" value={edit.stock_status} onChange={(e) => setEdit({ ...edit, stock_status: e.target.value })}>{Object.entries(STOCK).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}</select></Field>
               <Field label="Description" className="sm:col-span-2"><textarea rows={2} className="input" value={edit.description || ''} onChange={(e) => setEdit({ ...edit, description: e.target.value })} /></Field>
             </div>
@@ -112,7 +114,7 @@ export default function GiftBoxes() {
                   </div>
                 ))}
                 <div className="flex gap-2">
-                  <select className="input flex-1" value={pick} onChange={(e) => setPick(e.target.value)}><option value="">+ Select a product to add…</option>{products.filter((p) => !edit.items.some((i) => i.product_id === p.id)).map((p) => <option key={p.id} value={p.id}>{p.name} ({inr(p.price)}/{p.unit_type})</option>)}</select>
+                  <select className="input flex-1" value={pick} onChange={(e) => setPick(e.target.value)}><option value="">+ Select a product to add…</option>{products.filter((p) => !edit.items.some((i) => i.product_id === p.id)).map((p) => <option key={p.id} value={p.id}>{p.name} ({inr(salePrice(p))}/{p.unit_type})</option>)}</select>
                   <button disabled={!pick} onClick={() => { setEdit({ ...edit, items: [...edit.items, { product_id: pick, quantity: 1 }] }); setPick('') }} className="btn-navy">Add</button>
                 </div>
                 {edit.items.length > 0 && <p className="text-xs text-slate-500">Individual value of contents: {inr(contentsValue)}</p>}

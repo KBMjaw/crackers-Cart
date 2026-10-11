@@ -101,7 +101,7 @@ export default function OrderDetail() {
                 {list.map((i) => (
                   <div key={i.id} className="px-4 py-3">
                     <div className="flex items-start justify-between gap-3 text-sm">
-                      <div><div className="font-semibold text-navy">{i.name}</div><div className="text-slate-500">{plural(i.quantity, i.unit_type)}{Number(i.price) > 0 && ` × ${inr(i.price)}`}</div></div>
+                      <div><div className="font-semibold text-navy">{i.name}</div><div className="text-slate-500">{plural(i.quantity, i.unit_type)}{Number(i.price) > 0 && ` × ${inr(i.price)}`}{Number(i.mrp) > Number(i.price) && <s className="ml-1 text-slate-400">{inr(i.mrp)}</s>}</div></div>
                       <div className="font-bold text-navy">{Number(i.subtotal) > 0 ? inr(i.subtotal) : <span className="text-festive-green">FREE</span>}</div>
                     </div>
                     {Array.isArray(i.details) && i.details.length > 0 && (

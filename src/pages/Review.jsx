@@ -69,7 +69,7 @@ export default function Review() {
             </thead>
             <tbody className="divide-y divide-navy-50">
               {cart.map((i) => (
-                <tr key={i.key}><td className="px-5 py-2.5 font-medium text-navy">{i.name}{i.type !== 'product' && <span className="ml-1 text-xs text-slate-500">({i.type === 'gift_box' ? 'Gift Box' : 'Combo'})</span>}</td><td className="px-2 text-center">{i.qty}</td><td className="px-2 text-right">{inr(i.price)}</td><td className="px-5 text-right font-semibold">{inr(i.price * i.qty)}</td></tr>
+                <tr key={i.key}><td className="px-5 py-2.5 font-medium text-navy">{i.name}{i.type !== 'product' && <span className="ml-1 text-xs text-slate-500">({i.type === 'gift_box' ? 'Gift Box' : 'Combo'})</span>}</td><td className="px-2 text-center">{i.qty}</td><td className="px-2 text-right">{inr(i.price)}{i.mrp > i.price && <div className="text-xs text-slate-400 line-through">{inr(i.mrp)}</div>}</td><td className="px-5 text-right font-semibold">{inr(i.price * i.qty)}</td></tr>
               ))}
               {freebies.map((f, k) => (
                 <tr key={`f${k}`} className="bg-emerald-50/60"><td className="px-5 py-2.5 text-emerald-800">{f.name} <span className="text-xs">(Complimentary)</span></td><td className="px-2 text-center">{f.qty}</td><td className="px-2 text-right text-emerald-700">FREE</td><td className="px-5 text-right text-emerald-700">₹0</td></tr>

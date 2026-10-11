@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { storage } from '../lib/format'
+import { storage, salePrice } from '../lib/format'
 import { isOfferLive } from '../lib/offers'
 
 const ShopCtx = createContext(null)
@@ -53,12 +53,14 @@ export function ShopProvider({ children }) {
         : i.type === 'gift_box' ? catalog.giftBoxes.find((g) => g.id === i.id)
         : catalog.offers.find((o) => o.id === i.id && o.offer_type === 'combo')
       if (!src || src.stock_status === 'out_of_stock') return []
-      const price = Number(i.type === 'combo' ? src.combo_price : src.price)
-      return [{ ...i, price }]
+      const price = i.type === 'combo' ? Number(src.combo_price) : salePrice(src)
+      const mrp = i.type === 'combo' ? price : Number(src.price)
+      return [{ ...i, price, mrp }]
     }))
   }, [catalog.loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const total = useMemo(() => cart.reduce((s, i) => s + i.price * i.qty, 0), [cart])
+  const savings = useMemo(() => cart.reduce((s, i) => s + Math.max(0, (i.mrp || i.price) - i.price) * i.qty, 0), [cart])
   const itemCount = useMemo(() => cart.reduce((s, i) => s + i.qty, 0), [cart])
   const qtyOf = useCallback((type, id) => cart.find((i) => i.key === `${type}:${id}`)?.qty || 0, [cart])
 
@@ -80,7 +82,7 @@ export function ShopProvider({ children }) {
     setCart((prev) => {
       if (next === 0) return prev.filter((i) => i.key !== key)
       if (existing) return prev.map((i) => (i.key === key ? { ...i, qty: next } : i))
-      return [...prev, { key, type: item.type, id: item.id, name: item.name, price: Number(item.price), unit: item.unit, image: item.image || null, icon: item.icon || null, qty: next }]
+      return [...prev, { key, type: item.type, id: item.id, name: item.name, price: Number(item.price), mrp: Number(item.mrp || item.price), unit: item.unit, image: item.image || null, icon: item.icon || null, qty: next }]
     })
     if (delta > 0 && budgetActive && total < budget.amount && newTotal >= budget.amount) {
       setBudgetAlert({ kind: newTotal > budget.amount ? 'over' : 'full' })
@@ -109,7 +111,7 @@ export function ShopProvider({ children }) {
     ...catalog, reload: load,
     customer, setCustomer, customerReady,
     budget, setBudget, budgetActive, remaining, fitsBudget,
-    cart, total, itemCount, qtyOf, changeQty, removeItem, clearCart, resetOrder,
+    cart, total, savings, itemCount, qtyOf, changeQty, removeItem, clearCart, resetOrder,
     budgetAlert, setBudgetAlert, toast, setToast,
   }
   return <ShopCtx.Provider value={value}>{children}</ShopCtx.Provider>

@@ -6,7 +6,7 @@ import { ProductCard, GiftBoxCard, ComboCard } from '../components/Cards'
 import BudgetMeter from '../components/BudgetMeter'
 import QuoteCard from '../components/QuoteCard'
 import { Empty, Spinner } from '../components/ui'
-import { inr } from '../lib/format'
+import { inr, salePrice } from '../lib/format'
 import { OFFER_TYPES } from '../lib/offers'
 
 const TABS = [
@@ -45,14 +45,14 @@ export default function Shop() {
 
   const filteredProducts = useMemo(() => products.filter((p) =>
     (cat === 'all' || p.category_id === cat) &&
-    rangeTest(Number(p.price)) &&
+    rangeTest(salePrice(p)) &&
     (!avail || p.stock_status !== 'out_of_stock') &&
     (!popular || p.featured) &&
     (!text || p.name.toLowerCase().includes(text) || (p.description || '').toLowerCase().includes(text) || (catById[p.category_id]?.name || '').toLowerCase().includes(text))
   ), [products, cat, rangeTest, avail, popular, text, catById])
 
   const filteredBoxes = useMemo(() => giftBoxes.filter((g) =>
-    rangeTest(Number(g.price)) && (!avail || g.stock_status !== 'out_of_stock') && (!popular || g.featured) &&
+    rangeTest(salePrice(g)) && (!avail || g.stock_status !== 'out_of_stock') && (!popular || g.featured) &&
     (!text || g.name.toLowerCase().includes(text) || (g.description || '').toLowerCase().includes(text) ||
       g.gift_box_items?.some((i) => i.product?.name.toLowerCase().includes(text)))
   ), [giftBoxes, rangeTest, avail, popular, text])

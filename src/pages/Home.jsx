@@ -4,7 +4,7 @@ import { useShop } from '../store/ShopContext'
 import useStartOrder from '../hooks/useStartOrder'
 import QuoteCard from '../components/QuoteCard'
 import { Thumb, Spinner } from '../components/ui'
-import { inr, waLink } from '../lib/format'
+import { inr, waLink, salePrice, hasOffer } from '../lib/format'
 
 function Sparks() {
   const dots = [[8, 18, 'bg-festive-yellow'], [22, 70, 'bg-saffron-400'], [78, 22, 'bg-festive-yellow'], [90, 64, 'bg-rose-400'], [55, 12, 'bg-white'], [40, 85, 'bg-festive-yellow'], [68, 80, 'bg-white']]
@@ -109,7 +109,7 @@ export default function Home() {
                 <Thumb src={g.image_1} icon="🎁" name={g.name} className="h-32 w-full" />
                 <div className="p-3">
                   <div className="font-display font-bold leading-tight text-navy">{g.name}</div>
-                  <div className="mt-1 text-lg font-extrabold text-saffron-600">{inr(g.price)}</div>
+                  <div className="mt-1 flex items-baseline gap-1.5"><span className="text-lg font-extrabold text-saffron-600">{inr(salePrice(g))}</span>{hasOffer(g) && <span className="text-xs text-slate-400 line-through">{inr(g.price)}</span>}</div>
                   <div className="text-xs text-slate-500">{g.gift_box_items?.length || 0} varieties</div>
                 </div>
               </button>

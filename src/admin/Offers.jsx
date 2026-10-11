@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Plus, Pencil, Trash2, X } from 'lucide-react'
 import { supabase } from '../lib/supabase'
-import { inr, fmtDay } from '../lib/format'
+import { inr, fmtDay, salePrice } from '../lib/format'
 import { OFFER_TYPES, isOfferLive } from '../lib/offers'
 import { PageHeader, Field } from './common'
 import { Spinner, Modal, Toggle, Empty } from '../components/ui'
@@ -16,7 +16,7 @@ export default function Offers() {
   const [pick, setPick] = useState('')
 
   const load = async () => {
-    const [o, p] = await Promise.all([supabase.from('offers').select('*').order('display_order').order('created_at'), supabase.from('products').select('id,name,price,unit_type').order('name')])
+    const [o, p] = await Promise.all([supabase.from('offers').select('*').order('display_order').order('created_at'), supabase.from('products').select('id,name,price,offer_price,unit_type').order('name')])
     setRows(o.data || []); setProducts(p.data || [])
   }
   useEffect(() => { load() }, [])
@@ -62,9 +62,9 @@ export default function Offers() {
   const set = (k, v) => setEdit((e) => ({ ...e, [k]: v }))
   const num = (v) => v.replace(/[^\d.]/g, '')
   const ProductSelect = ({ k }) => (
-    <select className="input" value={edit[k] || ''} onChange={(e) => set(k, e.target.value)}><option value="">Select product…</option>{products.map((p) => <option key={p.id} value={p.id}>{p.name} ({inr(p.price)}/{p.unit_type})</option>)}</select>
+    <select className="input" value={edit[k] || ''} onChange={(e) => set(k, e.target.value)}><option value="">Select product…</option>{products.map((p) => <option key={p.id} value={p.id}>{p.name} ({inr(salePrice(p))}/{p.unit_type})</option>)}</select>
   )
-  const comboWorth = edit?.combo_items?.reduce((s, c) => s + (pById[c.product_id]?.price || 0) * (Number(c.quantity) || 0), 0) || 0
+  const comboWorth = edit?.combo_items?.reduce((s, c) => s + (pById[c.product_id] ? salePrice(pById[c.product_id]) : 0) * (Number(c.quantity) || 0), 0) || 0
 
   return (
     <div>
@@ -121,7 +121,7 @@ export default function Offers() {
                   </div>
                 ))}
                 <div className="flex gap-2">
-                  <select className="input flex-1" value={pick} onChange={(e) => setPick(e.target.value)}><option value="">+ Add product…</option>{products.filter((p) => !edit.combo_items.some((c) => c.product_id === p.id)).map((p) => <option key={p.id} value={p.id}>{p.name} ({inr(p.price)})</option>)}</select>
+                  <select className="input flex-1" value={pick} onChange={(e) => setPick(e.target.value)}><option value="">+ Add product…</option>{products.filter((p) => !edit.combo_items.some((c) => c.product_id === p.id)).map((p) => <option key={p.id} value={p.id}>{p.name} ({inr(salePrice(p))})</option>)}</select>
                   <button disabled={!pick} onClick={() => { set('combo_items', [...edit.combo_items, { product_id: pick, quantity: 1 }]); setPick('') }} className="btn-navy">Add</button>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">

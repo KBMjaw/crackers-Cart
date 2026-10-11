@@ -1,5 +1,10 @@
 export const inr = (n) => '₹' + Number(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 2 })
 
+// Selling price (MRP) is `price`; when an Offer Price is set we sell at the offer price.
+export const hasOffer = (x) => x?.offer_price != null && x.offer_price !== '' && Number(x.offer_price) > 0 && Number(x.offer_price) < Number(x.price)
+export const salePrice = (x) => (x?.offer_price != null && x.offer_price !== '' && Number(x.offer_price) > 0 ? Number(x.offer_price) : Number(x?.price || 0))
+export const pctOff = (x) => (hasOffer(x) ? Math.round((1 - Number(x.offer_price) / Number(x.price)) * 100) : 0)
+
 export const fmtDate = (d) =>
   d ? new Date(d).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—'
 

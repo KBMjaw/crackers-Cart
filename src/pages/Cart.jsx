@@ -7,10 +7,11 @@ import { inr } from '../lib/format'
 import { computeFreebies, nextNudges } from '../lib/offers'
 
 export function BudgetSummary() {
-  const { total, itemCount, budgetActive, budget, remaining } = useShop()
+  const { total, savings, itemCount, budgetActive, budget, remaining } = useShop()
   return (
     <dl className="space-y-2 text-sm">
-      <div className="flex justify-between"><dt className="text-slate-600">Subtotal</dt><dd className="font-semibold">{inr(total)}</dd></div>
+      <div className="flex justify-between"><dt className="text-slate-600">{savings > 0 ? 'Selling Price Total' : 'Subtotal'}</dt><dd className="font-semibold">{inr(total + savings)}</dd></div>
+      {savings > 0 && <div className="flex justify-between text-festive-green"><dt>Offer Savings</dt><dd className="font-semibold">− {inr(savings)}</dd></div>}
       <div className="flex justify-between"><dt className="text-slate-600">Total Items</dt><dd className="font-semibold">{itemCount}</dd></div>
       <div className="flex justify-between border-t border-dashed border-navy-100 pt-2 text-base"><dt className="font-bold text-navy">Total Amount</dt><dd className="font-display text-xl font-extrabold text-navy">{inr(total)}</dd></div>
       {budgetActive ? (
@@ -62,12 +63,12 @@ export default function Cart() {
                 <Thumb src={i.image} icon={i.icon || (i.type === 'gift_box' ? '🎁' : i.type === 'combo' ? '🎊' : '🎇')} name={i.name} className="h-14 w-14 rounded-xl text-2xl" />
                 <div className="min-w-0">
                   <div className="font-semibold leading-tight text-navy">{i.name}</div>
-                  <div className="text-xs text-slate-500">{i.type === 'gift_box' ? 'Gift Box' : i.type === 'combo' ? 'Combo Offer' : i.unit}<span className="sm:hidden"> · {inr(i.price)}</span></div>
+                  <div className="text-xs text-slate-500">{i.type === 'gift_box' ? 'Gift Box' : i.type === 'combo' ? 'Combo Offer' : i.unit}<span className="sm:hidden"> · {inr(i.price)}{i.mrp > i.price && <s className="ml-1 text-slate-400">{inr(i.mrp)}</s>}</span></div>
                   <div className="mt-2 flex items-center gap-3 sm:hidden">
                     <QtyStepper size="sm" value={i.qty} onDec={() => changeQty(i, -1)} onInc={() => changeQty(i, 1)} />
                   </div>
                 </div>
-                <div className="hidden text-right text-sm sm:block">{inr(i.price)}</div>
+                <div className="hidden text-right text-sm sm:block">{inr(i.price)}{i.mrp > i.price && <div className="text-xs text-slate-400 line-through">{inr(i.mrp)}</div>}</div>
                 <div className="hidden justify-center sm:flex"><QtyStepper size="sm" value={i.qty} onDec={() => changeQty(i, -1)} onInc={() => changeQty(i, 1)} /></div>
                 <div className="flex flex-col items-end gap-2 sm:contents">
                   <div className="text-right font-bold text-navy">{inr(i.price * i.qty)}</div>
