@@ -28,7 +28,7 @@ export function buildMessage(template, order, items, shop) {
     .replaceAll('{order_id}', order.order_number)
     .replaceAll('{items}', lines)
     .replaceAll('{total}', Number(order.total_amount).toLocaleString('en-IN'))
-    .replaceAll('{shop}', shop || 'CrackersCart')
+    .replaceAll('{shop}', shop || 'Shanmuga Crackers')
 }
 
 export default function OrderDetail() {

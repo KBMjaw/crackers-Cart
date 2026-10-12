@@ -12,10 +12,10 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-navy-50 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2">
         <Link to="/" className="flex items-center gap-2">
-          <img src={settings?.logo_url || '/logo.webp'} alt={settings?.shop_name || 'CrackersCart'} className="h-11 w-11 object-contain" />
+          <img src={settings?.logo_url || '/logo.webp'} alt={settings?.shop_name || 'Shanmuga Crackers'} className="h-11 w-11 rounded-xl bg-white object-contain" />
           <div className="leading-none">
-            <div className="font-display text-xl font-extrabold"><span className="text-navy">Crackers</span><span className="text-saffron-500">Cart</span></div>
-            <div className="hidden text-[11px] font-medium text-slate-500 sm:block">{settings?.tagline || 'Your Diwali. Your Choice. Your Cart.'}</div>
+            <div className="font-display text-xl font-extrabold"><span className="text-navy">Shanmuga</span> <span className="text-saffron-500">Crackers</span></div>
+            <div className="hidden text-[11px] font-medium text-slate-500 sm:block">{settings?.tagline || 'சண்முகா பட்டாசுகள் & மத்தாப்புக்கள்'}</div>
           </div>
         </Link>
         <nav className="hidden items-center gap-1 md:flex">
@@ -38,8 +38,8 @@ export function Footer() {
     <footer className="mt-12 border-t border-navy-50 bg-navy text-navy-100">
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 sm:grid-cols-3">
         <div>
-          <div className="font-display text-2xl font-extrabold"><span className="text-white">Crackers</span><span className="text-saffron-400">Cart</span></div>
-          <p className="mt-1 text-sm text-navy-100/80">{settings?.tagline || 'Your Diwali. Your Choice. Your Cart.'}</p>
+          <div className="font-display text-2xl font-extrabold"><span className="text-white">Shanmuga</span> <span className="text-saffron-400">Crackers</span></div>
+          <p className="mt-1 text-sm text-navy-100/80">{settings?.tagline || 'சண்முகா பட்டாசுகள் & மத்தாப்புக்கள்'}</p>
         </div>
         <div className="space-y-2 text-sm">
           {settings?.contact_number && <a href={`tel:${settings.contact_number}`} className="flex items-center gap-2 hover:text-white"><Phone size={16} /> {settings.contact_number}</a>}
@@ -53,7 +53,7 @@ export function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-4 text-xs sm:flex-row">
-          <span>© {new Date().getFullYear()} {settings?.shop_name || 'CrackersCart'}. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} {settings?.shop_name || 'Shanmuga Crackers'}. All rights reserved.</span>
           <a href="https://cubecorpsol.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-white hover:text-saffron-400">
             A product by <span className="underline decoration-saffron-400 underline-offset-2">Cube CorpSol</span>
           </a>

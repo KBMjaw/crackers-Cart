@@ -38,8 +38,8 @@ export default function Settings() {
           <Field label="WhatsApp Number" hint="10-digit number; used for the WhatsApp buttons on the website"><input className="input" inputMode="tel" value={s.whatsapp_number || ''} onChange={(e) => set('whatsapp_number', e.target.value)} /></Field>
           <Field label="Address" className="sm:col-span-2"><textarea rows={2} className="input" value={s.address || ''} onChange={(e) => set('address', e.target.value)} /></Field>
           <Field label="Homepage Text" className="sm:col-span-2"><textarea rows={3} className="input" value={s.homepage_text || ''} onChange={(e) => set('homepage_text', e.target.value)} /></Field>
-          <Field label="Logo" hint="Leave empty to use the CrackersCart logo"><ImageInput value={s.logo_url} onChange={(v) => set('logo_url', v)} folder="branding" label="Upload logo" /></Field>
-          <Field label="Diwali Banner" hint="Shown behind the homepage hero"><ImageInput value={s.banner_url} onChange={(v) => set('banner_url', v)} folder="branding" label="Upload banner" /></Field>
+          <Field label="Logo" hint="Leave empty to use the Shanmuga Crackers logo"><ImageInput value={s.logo_url} onChange={(v) => set('logo_url', v)} folder="branding" label="Upload logo" /></Field>
+          <Field label="Diwali Banner" hint="Shown at the top of the homepage. Leave empty to use the Shanmuga banner."><ImageInput value={s.banner_url} onChange={(v) => set('banner_url', v)} folder="branding" label="Upload banner" /></Field>
         </section>
 
         <section className="card grid gap-4 p-5 sm:grid-cols-2">

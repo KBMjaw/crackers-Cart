@@ -35,7 +35,7 @@ export function ShopProvider({ children }) {
     setCatalog({
       loading: false,
       error: err ? err.message : null,
-      settings: s.data || { shop_name: 'CrackersCart', orders_open: true, min_order_amount: 0, serviceable_pincodes: '' },
+      settings: s.data || { shop_name: 'Shanmuga Crackers', orders_open: true, min_order_amount: 0, serviceable_pincodes: '' },
       categories: c.data || [],
       products: p.data || [],
       giftBoxes: g.data || [],

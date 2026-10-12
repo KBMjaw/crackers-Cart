@@ -35,7 +35,7 @@ function Login({ onDone }) {
   return (
     <div className="grid min-h-screen place-items-center bg-navy-900 px-4">
       <form onSubmit={submit} className="pop w-full max-w-sm rounded-3xl bg-white p-7 shadow-2xl">
-        <img src="/logo.webp" alt="CrackersCart" className="mx-auto h-28 w-28 object-contain" />
+        <img src="/logo.webp" alt="Shanmuga Crackers" className="mx-auto h-28 w-28 object-contain" />
         <h1 className="mt-1 text-center text-2xl font-extrabold text-navy">Admin Login</h1>
         <p className="text-center text-sm text-slate-500">Authorised staff only</p>
         <div className="mt-6 space-y-3">
@@ -99,7 +99,7 @@ export default function AdminApp() {
       <aside className="fixed inset-y-0 left-0 hidden w-60 overflow-y-auto bg-navy-900 lg:block">
         <div className="flex items-center gap-2 border-b border-white/10 px-4 py-4">
           <img src="/logo.webp" alt="" className="h-10 w-10 rounded-lg bg-white object-contain" />
-          <div className="font-display text-lg font-extrabold leading-none"><span className="text-white">Crackers</span><span className="text-saffron-400">Cart</span><div className="text-[11px] font-medium text-navy-100">Admin Panel</div></div>
+          <div className="font-display text-lg font-extrabold leading-none"><span className="text-white">Shanmuga</span> <span className="text-saffron-400">Crackers</span><div className="text-[11px] font-medium text-navy-100">Admin Panel</div></div>
         </div>
         {sidebar}
       </aside>

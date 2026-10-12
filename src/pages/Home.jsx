@@ -24,16 +24,16 @@ export default function Home() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden bg-navy-900 text-white">
-        {settings?.banner_url
-          ? <img src={settings.banner_url} alt="" className="absolute inset-0 h-full w-full object-cover opacity-40" />
-          : <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(247,148,29,.45),transparent_55%),radial-gradient(ellipse_at_bottom_left,rgba(230,51,35,.35),transparent_50%)]" />}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(247,148,29,.40),transparent_55%),radial-gradient(ellipse_at_bottom_left,rgba(255,201,60,.18),transparent_50%)]" />
         <Sparks />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-6 px-4 pb-10 pt-8 md:grid-cols-[1.2fr_1fr] md:py-16">
-          <div className="text-center md:text-left">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-6 px-4 pb-10 pt-5 md:grid-cols-[1fr_1.15fr] md:py-14">
+          <div className="order-2 text-center md:order-1 md:text-left">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-festive-yellow ring-1 ring-white/15">🪔 Diwali {new Date().getFullYear()} orders</span>
             <h1 className="mt-3 text-4xl font-extrabold leading-[1.05] sm:text-5xl">
-              Your Diwali.<br /><span className="text-festive-yellow">Your Choice.</span><br /><span className="text-saffron-400">Your Cart.</span>
+              <span className="text-white">Shanmuga</span> <span className="text-festive-yellow">Crackers</span>
             </h1>
+            <p className="mt-1 font-display text-xl font-bold text-saffron-400 sm:text-2xl">சண்முகா பட்டாசுகள் &amp; மத்தாப்புக்கள்</p>
+            {settings?.tagline && <p className="mt-1 text-sm font-semibold text-festive-yellow/90">{settings.tagline}</p>}
             <p className="mx-auto mt-4 max-w-md text-base text-navy-100 md:mx-0">
               {settings?.homepage_text || 'Pick a ready gift box or build your own Diwali box within your budget.'}
             </p>
@@ -52,9 +52,9 @@ export default function Home() {
               <span className="flex items-center gap-1"><ClipboardCheck size={14} /> Order in 2 minutes</span>
             </div>
           </div>
-          <div className="relative mx-auto w-56 sm:w-72 md:w-80">
-            <div className="absolute inset-6 rounded-full bg-saffron-500/40 blur-3xl" />
-            <img src={settings?.logo_url || '/logo.webp'} alt="CrackersCart" className="relative w-full rounded-[2rem] bg-white p-2 shadow-2xl" />
+          <div className="relative order-1 w-full md:order-2">
+            <div className="absolute inset-4 rounded-3xl bg-saffron-500/40 blur-3xl" />
+            <img src={settings?.banner_url || '/banner.jpg'} alt={`${settings?.shop_name || 'Shanmuga Crackers'} – பட்டாசுகள் & மத்தாப்புக்கள்`} className="relative w-full rounded-2xl shadow-2xl ring-4 ring-white/15" />
           </div>
         </div>
       </section>

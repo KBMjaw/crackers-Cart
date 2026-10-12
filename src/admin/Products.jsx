@@ -58,7 +58,7 @@ export default function Products() {
     'Product Name': p.name, Category: catById[p.category_id]?.name || '', Description: p.description || '',
     'Selling Price': Number(p.price), 'Offer Price': p.offer_price != null ? Number(p.offer_price) : '', 'Unit Type': p.unit_type,
     Stock: STOCK[p.stock_status]?.label, Featured: p.featured ? 'Yes' : 'No', Active: p.active ? 'Yes' : 'No', 'Display Order': p.display_order, 'Image URL': p.image || '',
-  })), `crackerscart-products-${new Date().toISOString().slice(0, 10)}.xlsx`)
+  })), `shanmuga-products-${new Date().toISOString().slice(0, 10)}.xlsx`)
 
   return (
     <div>

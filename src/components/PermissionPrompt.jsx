@@ -53,7 +53,7 @@ export default function PermissionPrompt() {
   return (
     <Modal open={open} onClose={() => decide(false)}>
       <div className="text-center">
-        <img src="/logo.webp" alt="" className="mx-auto -mt-2 h-20 w-20 object-contain" />
+        <img src="/logo.webp" alt="" className="mx-auto -mt-2 h-20 w-20 rounded-2xl bg-white object-contain" />
         <h3 className="text-2xl font-bold text-navy">Allow required permissions to continue</h3>
         <p className="mt-1 text-sm text-slate-600">One-time permission for a faster, smoother order.</p>
       </div>

@@ -1,6 +1,6 @@
-# CrackersCart 🪔
+# Shanmuga Crackers 🪔
 
-**Your Diwali. Your Choice. Your Cart.**
+**சண்முகா பட்டாசுகள் & மத்தாப்புக்கள்** – Diwali crackers order website.
 
 A mobile-first Diwali crackers order-booking website with an admin panel. Customers pick gift boxes or individual crackers within their budget and submit an order — no online payment. The admin team manages orders, products, gift boxes, offers and festive messages from `/admin`.
 

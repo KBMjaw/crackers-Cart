@@ -189,8 +189,8 @@ export default function BulkUpload({ open, onClose, products, categories, onDone
               <li>Leave Offer Price empty to sell at the selling price.</li>
             </ul>
             <div className="mt-3 flex flex-wrap gap-2">
-              <button className="btn-ghost btn-sm" onClick={() => downloadSheet(templateRows(), 'crackerscart-products-template.xlsx')}><Download size={14} /> Excel template</button>
-              <button className="btn-ghost btn-sm" onClick={() => downloadSheet(templateRows(), 'crackerscart-products-template.csv', 'csv')}><Download size={14} /> CSV template</button>
+              <button className="btn-ghost btn-sm" onClick={() => downloadSheet(templateRows(), 'shanmuga-products-template.xlsx')}><Download size={14} /> Excel template</button>
+              <button className="btn-ghost btn-sm" onClick={() => downloadSheet(templateRows(), 'shanmuga-products-template.csv', 'csv')}><Download size={14} /> CSV template</button>
             </div>
           </div>
 
