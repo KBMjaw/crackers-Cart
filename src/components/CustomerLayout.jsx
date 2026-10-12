@@ -19,7 +19,7 @@ export function Header() {
           </div>
         </Link>
         <nav className="hidden items-center gap-1 md:flex">
-          {[['/shop/gift-boxes', 'Gift Boxes'], ['/shop/crackers', 'Crackers'], ['/shop/build', 'Build Your Box'], ['/shop/offers', 'Offers']].map(([to, l]) => (
+          {[['/shop/crackers', 'Crackers'], ['/shop/gift-boxes', 'Gift Boxes'], ['/shop/build', 'Build Your Box'], ['/shop/offers', 'Offers']].map(([to, l]) => (
             <NavLink key={to} to={to} className={({ isActive }) => `rounded-lg px-3 py-2 text-sm font-semibold ${isActive ? 'bg-navy-50 text-navy' : 'text-navy-800 hover:bg-navy-50'}`}>{l}</NavLink>
           ))}
         </nav>

@@ -10,8 +10,8 @@ import { inr, salePrice } from '../lib/format'
 import { OFFER_TYPES } from '../lib/offers'
 
 const TABS = [
-  { id: 'gift-boxes', label: 'Gift Boxes', icon: Gift },
   { id: 'crackers', label: 'Crackers', icon: Sparkles },
+  { id: 'gift-boxes', label: 'Gift Boxes', icon: Gift },
   { id: 'build', label: 'Build Your Box', icon: PackageOpen },
   { id: 'offers', label: 'Offers', icon: Tag },
 ]
